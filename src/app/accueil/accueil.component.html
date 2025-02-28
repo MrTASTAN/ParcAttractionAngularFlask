@@ -1,0 +1,69 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>{{ 'welcome_message' | translate }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+
+    <!-- Vérification des attractions visibles -->
+    <div *ngIf="visibleAttractions | async as attractions; else noAttractions">
+      <div *ngFor="let attraction of attractions">
+        <div class="attraction">
+          <span>{{ attraction.nom }}</span>
+          <span>{{ attraction.description }}</span>
+          <span>{{ 'difficulty' | translate }} : {{ attraction.difficulte }} / 5</span>
+          <button mat-stroked-button (click)="showReviews(attraction.attraction_id)">
+            {{ 'see_reviews' | translate }}
+          </button>
+          
+          <!-- Section des critiques -->
+          <div *ngIf="selectedAttractionId === attraction.attraction_id">
+            <h3>{{ 'reviews' | translate }} :</h3>
+            
+            <!-- Vérification des critiques -->
+            <div *ngIf="reviews | async as reviewList; else noReviews">
+              <div *ngFor="let review of reviewList">
+                <p><strong>{{ 'rating' | translate }} :</strong> {{ review.note }} / 5</p>
+                <p><strong>{{ 'comment' | translate }} :</strong> {{ review.commentaire }}</p>
+                <p><strong>{{ 'name' | translate }} :</strong> {{ review.nom || 'Anonyme' }}</p>
+                <hr />
+              </div>
+            </div>
+
+            <!-- Message si aucune critique -->
+            <ng-template #noReviews>
+              <p>{{ 'no_reviews' | translate }}</p>
+            </ng-template>
+
+            <!-- Formulaire pour ajouter une critique -->
+            <h4>{{ 'add_review' | translate }} :</h4>
+            <form *ngIf="attraction.attraction_id !== null" (ngSubmit)="submitReview(attraction.attraction_id)">
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'rating' | translate }}</mat-label>
+                <input matInput type="number" min="1" max="5" [(ngModel)]="reviewNote" name="note" required />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'comment' | translate }}</mat-label>
+                <textarea matInput rows="3" [(ngModel)]="reviewComment" name="commentaire" required></textarea>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'name_optional' | translate }}</mat-label>
+                <input matInput type="text" [(ngModel)]="reviewNom" name="nom" />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'surname_optional' | translate }}</mat-label>
+                <input matInput type="text" [(ngModel)]="reviewPrenom" name="prenom" />
+              </mat-form-field>
+              <button mat-raised-button color="primary" type="submit">{{ 'send' | translate }}</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Message si aucune attraction visible -->
+    <ng-template #noAttractions>
+      <p>{{ 'no_visible_attractions' | translate }}</p>
+    </ng-template>
+
+  </mat-card-content>
+</mat-card>

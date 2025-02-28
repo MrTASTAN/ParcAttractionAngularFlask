@@ -1,0 +1,17 @@
+{
+  "welcome_message": "Bienvenue sur le site internet du parc d'attraction",
+  "attraction_name": "Nom de l'attraction",
+  "description": "Description de l'attraction",
+  "difficulty": "Difficulté de l'attraction",
+  "see_reviews": "Voir les critiques",
+  "reviews": "Critiques",
+  "rating": "Note",
+  "comment": "Commentaire",
+  "name": "Nom",
+  "no_reviews": "Aucune critique disponible pour le moment.",
+  "add_review": "Ajouter une critique",
+  "name_optional": "Nom (optionnel)",
+  "surname_optional": "Prénom (optionnel)",
+  "send": "Envoyer",
+  "no_visible_attractions": "Aucune attraction disponible pour le moment."
+}

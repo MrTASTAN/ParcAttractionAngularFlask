@@ -1,0 +1,17 @@
+{
+  "welcome_message": "Welcome to the amusement park's website",
+  "attraction_name": "Attraction Name",
+  "description": "Attraction Description",
+  "difficulty": "Attraction Difficulty",
+  "see_reviews": "See Reviews",
+  "reviews": "Reviews",
+  "rating": "Rating",
+  "comment": "Comment",
+  "name": "Name",
+  "no_reviews": "No reviews available yet.",
+  "add_review": "Add a Review",
+  "name_optional": "Name (optional)",
+  "surname_optional": "Surname (optional)",
+  "send": "Send",
+  "no_visible_attractions": "No attractions available at the moment."
+}
