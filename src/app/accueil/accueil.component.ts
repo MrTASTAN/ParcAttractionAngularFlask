@@ -21,7 +21,6 @@ export class AccueilComponent {
   public visibleAttractions$: Observable<AttractionInterface[]>;  // ✅ Observable pour les attractions visibles
   public reviews$: Observable<ReviewInterface[]> = of([]); // ✅ Observable pour les critiques
   public selectedAttractionId: number | null = null;
-  public errorMessage: string | null = null;
 
   // Variables pour le formulaire de critique
   public reviewNote: number = 0;
@@ -49,7 +48,6 @@ export class AccueilComponent {
   public submitReview(attractionId: number | null): void {
     if (attractionId === null || this.reviewNote <= 0 || this.reviewComment.trim() === '') {
       console.error("❌ Erreur : Tous les champs sont obligatoires.");
-      this.errorMessage = "Merci de remplir tous les champs avant d'envoyer votre critique.";
       return;
     }
 
@@ -70,7 +68,6 @@ export class AccueilComponent {
       },
       error => {
         console.error("❌ Erreur lors de l'envoi de la critique :", error);
-        this.errorMessage = "Échec de l'envoi de la critique. Veuillez réessayer.";
       }
     );
   }
@@ -83,5 +80,15 @@ export class AccueilComponent {
     this.reviewComment = '';
     this.reviewNom = undefined;
     this.reviewPrenom = undefined;
+  }
+    /**
+   * Optimisation du *ngFor pour éviter les re-rendu inutiles
+   */
+  trackByAttractionId(index: number, attraction: AttractionInterface): number {
+    return attraction.attraction_id ?? index; // ✅ Utilise l'index si `attraction_id` est null
+  }
+
+  trackByReviewId(index: number, review: ReviewInterface): number {
+    return review.id ?? index; // ✅ Utilise l'index si `id` est null
   }
 }

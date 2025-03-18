@@ -16,36 +16,43 @@ export class DataService {
   // ✅ GET : Récupération des données
   public getData<T>(url: string): Observable<T> {
     return this.http.get<T>(url).pipe(
-      catchError(this.handleError<T>('getData'))
+      catchError(this.handleError<T>('getData', url))
     );
   }
 
-  // ✅ POST : Envoi de données
-  public postData<T>(url: string, data: any): Observable<T> {
-    return this.http.post<T>(url, data, this.httpOptions).pipe(
-      catchError(this.handleError<T>('postData'))
+  // ✅ POST : Envoi de données (corrigé)
+  public postData<T, R>(url: string, data: T): Observable<R> {
+    return this.http.post<R>(url, data, this.httpOptions).pipe(
+      catchError(this.handleError<R>('postData', url))
     );
   }
 
-  // ✅ PUT : Mise à jour des données (ajouté pour corriger l'erreur)
-  public putData<T>(url: string, data: any): Observable<T> {
-    return this.http.put<T>(url, data, this.httpOptions).pipe(
-      catchError(this.handleError<T>('putData'))
+  // ✅ PUT : Mise à jour complète (corrigé)
+  public putData<T, R>(url: string, data: T): Observable<R> {
+    return this.http.put<R>(url, data, this.httpOptions).pipe(
+      catchError(this.handleError<R>('putData', url))
     );
   }
 
-  // ✅ DELETE : Suppression de données
+  // ✅ PATCH : Mise à jour partielle (corrigé)
+  public patchData<T, R>(url: string, data: Partial<T>): Observable<R> {
+    return this.http.patch<R>(url, data, this.httpOptions).pipe(
+      catchError(this.handleError<R>('patchData', url))
+    );
+  }
+
+  // ✅ DELETE : Suppression
   public deleteData<T>(url: string): Observable<T> {
     return this.http.delete<T>(url, this.httpOptions).pipe(
-      catchError(this.handleError<T>('deleteData'))
+      catchError(this.handleError<T>('deleteData', url))
     );
   }
 
-  // 🚨 Gestion des erreurs
-  private handleError<T>(operation = 'operation') {
+  // 🚨 Gestion améliorée des erreurs
+  private handleError<T>(operation = 'operation', url = '') {
     return (error: any): Observable<T> => {
-      console.error(`❌ Erreur dans ${operation}:`, error);
-      return throwError(() => new Error(`${operation} a échoué`));
+      console.error(`❌ Erreur dans ${operation} (${url}):`, error.message || error);
+      return throwError(() => new Error(`${operation} a échoué: ${error.message || error}`));
     };
   }
 }

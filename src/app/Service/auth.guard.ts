@@ -11,7 +11,7 @@ export class AuthGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(): Observable<boolean> | boolean {
-    if (this.authService.isAuthenticated) {
+    if (this.authService.isAuthenticated()) {
       return true;
     }
     // ✅ Redirection propre et éviter une boucle infinie

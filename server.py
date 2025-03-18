@@ -2,7 +2,8 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)  # ✅ Active le CORS pour éviter l'erreur d'accès depuis Angular
+CORS(app, resources={r"/*": {"origins": "*"}})  # Autorise toutes les origines
+ # ✅ Active le CORS pour éviter l'erreur d'accès depuis Angular
 
 # ⚙️ Données simulées (à remplacer par une vraie base de données)
 attractions = [
@@ -37,4 +38,5 @@ def add_review():
 
 # 🚀 Lancer le serveur Flask
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=True, host="0.0.0.0", port=5001)  # 👈 Autorise les connexions externes
+

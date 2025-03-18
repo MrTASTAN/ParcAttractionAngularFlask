@@ -30,7 +30,7 @@ export class LoginComponent {
   public login() {
 
     this.authService.login(this.form.getRawValue()).subscribe(() => {
-      if (this.authService.isAuthenticated) {
+      if (this.authService.isAuthenticated()) {
         const redirectUrl = '/admin';
 
         this.router.navigate([redirectUrl]);

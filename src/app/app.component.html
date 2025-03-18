@@ -1,21 +1,23 @@
 <mat-toolbar color="primary">
-  <span>
-    <button mat-button routerLink="/accueil">Parc d'attraction</button>
-  </span>
+  <mat-toolbar-row>
+    <span>
+      <button mat-button routerLink="/accueil">Parc d'attraction</button>
+    </span>
 
-  <div class="toolbar-right">
-    <div *ngIf="authService.isAuthenticated">
-      <button mat-stroked-button (click)="logout()">Déconnexion</button>
-    </div>
+    <span class="toolbar-right">
+      <div *ngIf="authService.isAuthenticated()">
+        <button mat-stroked-button (click)="logout()">Déconnexion</button>
+      </div>
 
-    <div class="language-selector">
-      <label for="language-select">Langue :</label>
-      <select id="language-select" (change)="switchLang(getLangValue($event))">
-        <option value="fr">Français</option>
-        <option value="en">English</option>
-      </select>
-    </div>
-  </div>
+      <div class="language-selector">
+        <label for="language-select">Langue :</label>
+        <select id="language-select" (change)="changeLanguage($event)">
+          <option value="fr">Français</option>
+          <option value="en">English</option>
+        </select>
+      </div>
+    </span>
+  </mat-toolbar-row>
 </mat-toolbar>
 
 <main>

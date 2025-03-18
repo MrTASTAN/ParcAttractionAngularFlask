@@ -5,8 +5,8 @@
   <mat-card-content>
 
     <!-- Vérification des attractions visibles -->
-    <div *ngIf="visibleAttractions | async as attractions; else noAttractions">
-      <div *ngFor="let attraction of attractions">
+    <div *ngIf="visibleAttractions$ | async as attractions; else noAttractions">
+      <div *ngFor="let attraction of attractions; trackBy: trackByAttractionId">
         <div class="attraction">
           <span>{{ attraction.nom }}</span>
           <span>{{ attraction.description }}</span>
@@ -20,8 +20,8 @@
             <h3>{{ 'reviews' | translate }} :</h3>
             
             <!-- Vérification des critiques -->
-            <div *ngIf="reviews | async as reviewList; else noReviews">
-              <div *ngFor="let review of reviewList">
+            <div *ngIf="reviews$ | async as reviewList; else noReviews">
+              <div *ngFor="let review of reviewList; trackBy: trackByReviewId">
                 <p><strong>{{ 'rating' | translate }} :</strong> {{ review.note }} / 5</p>
                 <p><strong>{{ 'comment' | translate }} :</strong> {{ review.commentaire }}</p>
                 <p><strong>{{ 'name' | translate }} :</strong> {{ review.nom || 'Anonyme' }}</p>
@@ -39,19 +39,19 @@
             <form *ngIf="attraction.attraction_id !== null" (ngSubmit)="submitReview(attraction.attraction_id)">
               <mat-form-field appearance="outline">
                 <mat-label>{{ 'rating' | translate }}</mat-label>
-                <input matInput type="number" min="1" max="5" [(ngModel)]="reviewNote" name="note" required />
+                <input matInput type="number" min="1" max="5" [(ngModel)]="reviewNote" name="reviewNote" required />
               </mat-form-field>
               <mat-form-field appearance="outline">
                 <mat-label>{{ 'comment' | translate }}</mat-label>
-                <textarea matInput rows="3" [(ngModel)]="reviewComment" name="commentaire" required></textarea>
+                <textarea matInput rows="3" [(ngModel)]="reviewComment" name="reviewComment" required></textarea>
               </mat-form-field>
               <mat-form-field appearance="outline">
                 <mat-label>{{ 'name_optional' | translate }}</mat-label>
-                <input matInput type="text" [(ngModel)]="reviewNom" name="nom" />
+                <input matInput type="text" [(ngModel)]="reviewNom" name="reviewNom" />
               </mat-form-field>
               <mat-form-field appearance="outline">
                 <mat-label>{{ 'surname_optional' | translate }}</mat-label>
-                <input matInput type="text" [(ngModel)]="reviewPrenom" name="prenom" />
+                <input matInput type="text" [(ngModel)]="reviewPrenom" name="reviewPrenom" />
               </mat-form-field>
               <button mat-raised-button color="primary" type="submit">{{ 'send' | translate }}</button>
             </form>

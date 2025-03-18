@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs';
 import { DataService } from './data.service';
 import { AttractionInterface } from '../Interface/attraction.interface';
 import { MessageInterface } from '../Interface/message.interface';
@@ -9,62 +9,56 @@ import { ReviewInterface } from '../Interface/review.interface';
   providedIn: 'root',
 })
 export class AttractionService {
+  private apiUrl = "http://127.0.0.1:5001"; // ✅ Stocke l’URL pour éviter la répétition
 
   constructor(private dataService: DataService) {}
 
   /**
-   * Récupère toutes les attractions
+   * ✅ Récupère toutes les attractions
    */
-  public getAllAttraction(): Observable<AttractionInterface[]> {
-    const url = "http://127.0.0.1:5000/attraction";
-    return this.dataService.getData(url) as Observable<AttractionInterface[]>;
+  public getAllAttractions(): Observable<AttractionInterface[]> {
+    return this.dataService.getData<AttractionInterface[]>(`${this.apiUrl}/attraction`);
   }
 
   /**
-   * Récupère uniquement les attractions visibles
+   * ✅ Récupère uniquement les attractions visibles
    */
   public getVisibleAttractions(): Observable<AttractionInterface[]> {
-    const url = "http://127.0.0.1:5000/attraction/visible";
-    return this.dataService.getData(url) as Observable<AttractionInterface[]>;
+    return this.dataService.getData<AttractionInterface[]>(`${this.apiUrl}/attraction/visible`);
   }
 
   /**
-   * Ajoute une nouvelle attraction
+   * ✅ Ajoute une nouvelle attraction
    */
-  public postAttraction(attraction: AttractionInterface): Observable<MessageInterface> {
-    const url = "http://127.0.0.1:5000/attraction";
-    return this.dataService.postData(url, attraction) as Observable<MessageInterface>;
+  public postAttraction(attraction: AttractionInterface): Observable<any> { 
+    return this.dataService.postData(`${this.apiUrl}/attraction`, attraction);
   }
 
   /**
-   * Met à jour la visibilité d'une attraction
+   * ✅ Met à jour la visibilité d'une attraction
    */
-  public updateAttractionVisibility(attractionId: number, visible: boolean): Observable<MessageInterface> {
-    const url = `http://127.0.0.1:5000/attraction/${attractionId}/visibility`;
-    return this.dataService.putData(url, { visible }) as Observable<MessageInterface>;
+  public updateAttractionVisibility(attractionId: number, visible: boolean): Observable<any> {
+    return this.dataService.putData(`${this.apiUrl}/attraction/${attractionId}/visibility`, { visible });
   }
 
   /**
-   * Récupère les critiques d'une attraction
+   * ✅ Récupère les critiques d'une attraction
    */
   public getReviews(attractionId: number): Observable<ReviewInterface[]> {
-    const url = `http://127.0.0.1:5000/attraction/${attractionId}/reviews`;
-    return this.dataService.getData(url) as Observable<ReviewInterface[]>;
+    return this.dataService.getData<ReviewInterface[]>(`${this.apiUrl}/attraction/${attractionId}/reviews`);
   }
-  
+
   /**
-   * Ajoute une critique à une attraction
+   * ✅ Ajoute une critique à une attraction
    */
-  public postReview(review: ReviewInterface): Observable<MessageInterface> {
-    const url = "http://127.0.0.1:5000/reviews";
-    return this.dataService.postData(url, review) as Observable<MessageInterface>;
+  public postReview(review: ReviewInterface): Observable<any> {
+    return this.dataService.postData(`${this.apiUrl}/reviews`, review);
   }  
-  
+
   /**
-   * Met à jour une attraction existante
+   * ✅ Met à jour une attraction existante
    */
-  public updateAttraction(attraction: AttractionInterface): Observable<MessageInterface> {
-    const url = `http://127.0.0.1:5000/attraction/${attraction.attraction_id}`;
-    return this.dataService.putData(url, attraction) as Observable<MessageInterface>;
+  public updateAttraction(attraction: AttractionInterface): Observable<any> {
+    return this.dataService.putData(`${this.apiUrl}/attraction/${attraction.attraction_id}`, attraction);
   }
 }
