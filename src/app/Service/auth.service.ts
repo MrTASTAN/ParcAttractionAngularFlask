@@ -1,7 +1,11 @@
 import { Injectable, inject } from '@angular/core';
-import { UserInterface } from '../Interface/user.interface';
-import { Observable, BehaviorSubject, map } from 'rxjs';
+import { Observable, BehaviorSubject, map, catchError, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+
+interface AuthResponse {
+  message: string;
+  token?: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +16,7 @@ export class AuthService {
   
   private loggedInSubject = new BehaviorSubject<boolean>(this.getInitialAuthState());
   public loggedIn$ = this.loggedInSubject.asObservable(); // ✅ Observable pour écouter l'état de connexion
-  private user: UserInterface | null = null;
+  private token: string | null = null;
 
   constructor() {
     this.setUser(); // Vérifie l'état de connexion dès le démarrage
@@ -27,38 +31,44 @@ export class AuthService {
   }
 
   /**
-   * Connexion de l'utilisateur
+   * Connexion de l'utilisateur (Admin)
    */
-  login(form: object): Observable<boolean> {
-    return this.http.post<UserInterface>(
-      'http://127.0.0.1:5000/login',
-      { ...form }
-    ).pipe(map(user => {
-      const isLoggedIn = !!user.token;
-      this.user = isLoggedIn ? user : null;
+  login(email: string, password: string): Observable<boolean> {
+    return this.http.post<AuthResponse>(
+      'http://127.0.0.1:5001/login', // ✅ Correction de l'URL du serveur Flask
+      { email, password }
+    ).pipe(
+      map(response => {
+        if (response.token) {
+          this.token = response.token;
+          this.loggedInSubject.next(true);
 
-      // ✅ Mise à jour du BehaviorSubject
-      this.loggedInSubject.next(isLoggedIn);
+          // ✅ Stocker l'état de connexion dans `localStorage`
+          localStorage.setItem("token", response.token);
+          localStorage.setItem("loggedIn", "true");
 
-      // ✅ Stocker l'état de connexion dans `localStorage`
-      localStorage.setItem("user", JSON.stringify(user));
-      localStorage.setItem("loggedIn", JSON.stringify(isLoggedIn));
-
-      return isLoggedIn;
-    }));
+          return true;
+        }
+        return false;
+      }),
+      catchError(error => {
+        console.error("❌ Erreur de connexion :", error);
+        return throwError(() => new Error("Échec de la connexion. Vérifiez vos identifiants."));
+      })
+    );
   }
 
   /**
    * Déconnexion de l'utilisateur
    */
   logout(): void {
-    this.user = null;
-    
+    this.token = null;
+
     // ✅ Mise à jour du BehaviorSubject
     this.loggedInSubject.next(false);
 
     // ✅ Supprimer toutes les infos d'authentification
-    localStorage.removeItem("user");
+    localStorage.removeItem("token");
     localStorage.removeItem("loggedIn");
   }
 
@@ -66,10 +76,10 @@ export class AuthService {
    * Vérifie et met à jour l'état utilisateur depuis localStorage
    */
   private setUser() {
-    const userData = localStorage.getItem("user");
+    const storedToken = localStorage.getItem("token");
     const isLoggedIn = localStorage.getItem("loggedIn") === "true";
 
-    this.user = userData ? JSON.parse(userData) as UserInterface : null;
+    this.token = storedToken;
     this.loggedInSubject.next(isLoggedIn);
   }
 
@@ -78,5 +88,12 @@ export class AuthService {
    */
   private getInitialAuthState(): boolean {
     return localStorage.getItem("loggedIn") === "true";
+  }
+
+  /**
+   * Getter pour récupérer le token
+   */
+  public getToken(): string | null {
+    return this.token;
   }
 }

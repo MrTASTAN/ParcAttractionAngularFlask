@@ -9,11 +9,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { ReviewInterface } from '../Interface/review.interface';
 import { TranslateModule } from '@ngx-translate/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-accueil',
   standalone: true,
-  imports: [CommonModule, MatCardModule, FormsModule, MatInputModule, MatFormFieldModule, TranslateModule],
+  imports: [CommonModule, MatCardModule, FormsModule, MatInputModule, MatFormFieldModule, TranslateModule, RouterModule],
   templateUrl: './accueil.component.html',
   styleUrl: './accueil.component.scss',
 })

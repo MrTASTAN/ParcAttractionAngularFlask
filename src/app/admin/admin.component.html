@@ -11,7 +11,8 @@
         <span>Visible</span>
       </div>
     </div>
-    <ng-container *ngIf="attractions | async">
+    
+    <ng-container *ngIf="attractions$ | async">
       <ng-container *ngFor="let formulaireAttraction of formulaireAttractions; let indexForm = index;"
         [formGroup]="formulaireAttraction"
         style="display: flex; flex-direction: column;"
@@ -32,7 +33,10 @@
             <input matInput formControlName="difficulte" type="number">
           </mat-form-field>
 
-          <mat-slide-toggle class="champ" formControlName="visible" (change)="toggleVisibility(formulaireAttraction)">Element visible</mat-slide-toggle>
+          <mat-slide-toggle class="champ" formControlName="visible" (change)="toggleVisibility(formulaireAttraction)">
+            <mat-icon *ngIf="formulaireAttraction.get('visible')?.value">visibility</mat-icon>
+            <mat-icon *ngIf="!formulaireAttraction.get('visible')?.value">visibility_off</mat-icon>
+          </mat-slide-toggle>
 
           <button mat-button (click)="onSubmit(formulaireAttraction)" class="champ">Enregistrer</button>
         </div>

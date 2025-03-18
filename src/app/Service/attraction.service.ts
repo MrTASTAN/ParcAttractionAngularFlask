@@ -35,11 +35,13 @@ export class AttractionService {
   }
 
   /**
-   * ✅ Met à jour la visibilité d'une attraction
-   */
-  public updateAttractionVisibility(attractionId: number, visible: boolean): Observable<any> {
-    return this.dataService.putData(`${this.apiUrl}/attraction/${attractionId}/visibility`, { visible });
-  }
+ * Met à jour la visibilité d'une attraction
+ */
+public updateAttractionVisibility(attractionId: number, visible: boolean): Observable<MessageInterface> {
+  const url = `http://127.0.0.1:5001/attraction/${attractionId}/visibility`;
+  return this.dataService.patchData(url, { visible }) as Observable<MessageInterface>;
+}
+
 
   /**
    * ✅ Récupère les critiques d'une attraction

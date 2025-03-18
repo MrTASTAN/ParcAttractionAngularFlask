@@ -3,7 +3,6 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})  # Autorise toutes les origines
- # ✅ Active le CORS pour éviter l'erreur d'accès depuis Angular
 
 # ⚙️ Données simulées (à remplacer par une vraie base de données)
 attractions = [
@@ -15,6 +14,23 @@ reviews = [
     {"id": 1, "attraction_id": 1, "note": 5, "commentaire": "Incroyable !", "nom": "Alice", "prenom": "D."},
     {"id": 2, "attraction_id": 2, "note": 3, "commentaire": "Sympa mais trop lent.", "nom": "Bob", "prenom": "M."}
 ]
+
+# ⚙️ Simule une base d’administrateurs (à remplacer par une vraie BDD)
+admins = {
+    "admin@example.com": "admin123"
+}
+
+# 🏗️ Route de connexion admin
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.json
+    email = data.get("email")
+    password = data.get("password")
+
+    if email in admins and admins[email] == password:
+        return jsonify({"message": "Connexion réussie", "token": "admin-token"}), 200
+    else:
+        return jsonify({"error": "Identifiants incorrects"}), 401
 
 # 🏗️ Route pour obtenir les attractions visibles
 @app.route('/attraction/visible', methods=['GET'])
@@ -36,7 +52,16 @@ def add_review():
     reviews.append(new_review)
     return jsonify({"message": "Critique ajoutée avec succès"}), 201
 
+# 🏗️ Route pour mettre à jour la visibilité d'une attraction
+@app.route('/attraction/<int:attraction_id>/visibility', methods=['PATCH'])
+def update_visibility(attraction_id):
+    data = request.json
+    for attraction in attractions:
+        if attraction["attraction_id"] == attraction_id:
+            attraction["visible"] = data.get("visible", attraction["visible"])
+            return jsonify({"message": "Visibilité mise à jour avec succès"}), 200
+    return jsonify({"error": "Attraction non trouvée"}), 404
+
 # 🚀 Lancer le serveur Flask
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port=5001)  # 👈 Autorise les connexions externes
-

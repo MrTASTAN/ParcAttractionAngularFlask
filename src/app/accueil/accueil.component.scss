@@ -17,3 +17,26 @@
     width: 250px;
   }
 }
+
+.admin-button-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.review-section {
+  margin-top: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.review {
+  padding: 5px 0;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 10px;
+}

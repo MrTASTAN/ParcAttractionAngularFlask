@@ -5,10 +5,17 @@
     </span>
 
     <span class="toolbar-right">
-      <div *ngIf="authService.isAuthenticated()">
-        <button mat-stroked-button (click)="logout()">Déconnexion</button>
+      <!-- Affichage conditionnel en fonction de l'état de connexion -->
+      <div *ngIf="authService.isAuthenticated(); else loginButton">
+        <button mat-stroked-button routerLink="/admin">⚙️ Administration</button>
+        <button mat-stroked-button (click)="logout()">🚪 Déconnexion</button>
       </div>
 
+      <ng-template #loginButton>
+        <button mat-stroked-button routerLink="/login">🔑 Connexion</button>
+      </ng-template>
+
+      <!-- Sélecteur de langue -->
       <div class="language-selector">
         <label for="language-select">Langue :</label>
         <select id="language-select" (change)="changeLanguage($event)">
