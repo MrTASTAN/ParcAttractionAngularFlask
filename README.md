@@ -1,27 +1,42 @@
-# Parc
+# 🎢 ParcAttractionAngularFlask
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.1.0.
+Projet de développement web full-stack d’un site de gestion d’un parc d’attraction, réalisé en **Angular** (front-end) et **Flask** (back-end Python).  
+Ce projet est réalisé dans le cadre de la 3ᵉ année de BUT Informatique.
 
-## Development server
+## 📌 Fonctionnalités principales
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- ✅ **Affichage des attractions** visibles pour les visiteurs.
+- ✅ **Ajout de critiques** avec note (1 à 5), texte, nom et prénom (optionnels).
+- ✅ Interface **administrateur** pour :
+  - Modifier les attractions.
+  - Ajouter de nouvelles attractions.
+  - Changer la visibilité.
+- 🌐 **Multilingue** : support **Français 🇫🇷** et **Anglais 🇬🇧**.
+- 🎨 Interface responsive et ergonomique avec Angular Material.
+- 🔒 Authentification (connexion requise pour accéder à l'admin).
+- 🔧 Backend en Flask simulant une API REST simple.
 
-## Code scaffolding
+## 🧪 Bonus réalisés
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- ✅ Switch de langue en temps réel.
+- ✅ Structure propre Angular avec services, guards et routing.
+- ✅ Comportement responsive et design clair.
+- ✅ Gestion des erreurs côté front (observable + catchError).
+- 📄 Rédaction d’une documentation technique et fonctionnelle.
+- 🧪 (en cours) Tests unitaires côté Angular.
 
-## Build
+## 🚀 Lancer le projet
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### 1. Prérequis
 
-## Running unit tests
+- Node.js & Angular CLI
+- Python 3.12
+- pip
+- Git
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### 2. Lancer le front Angular
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```bash
+cd parc
+npm install
+ng serve
